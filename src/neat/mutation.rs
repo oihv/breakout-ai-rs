@@ -89,7 +89,7 @@ pub fn mutate_add_link(genome: &mut Genome) -> Option<()> {
 
     let new_link = LinkGene {
         id: link_id,
-        weight: (rand::random::<f32>() * 2.0 - 1.0) * 1000.0,
+        weight: (rand::random::<f32>() * 2.0 - 1.0), // Random weight between -1 and 1
         is_enabled: true,
     };
     genome.links.push(new_link);
