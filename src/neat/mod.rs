@@ -1,37 +1,37 @@
 use rand::{seq::IndexedRandom};
 
 use crate::neat::mutation::new_value;
-mod crossover;
-mod mutation;
-mod population;
-mod nn;
+pub mod crossover;
+pub mod mutation;
+pub mod population;
+pub mod nn;
 
-#[derive(Clone)]
-struct NeuronGene {
-    id: i32,
-    bias: f32,
+#[derive(Clone, Debug)]
+pub struct NeuronGene {
+    pub id: i32,
+    pub bias: f32,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
-struct LinkID {
-    in_id: i32,
-    out_id: i32,
+pub struct LinkID {
+    pub in_id: i32,
+    pub out_id: i32,
 }
 
-#[derive(Clone)]
-struct LinkGene {
-    id: LinkID,
-    weight: f32,
-    is_enabled: bool,
+#[derive(Clone, Debug)]
+pub struct LinkGene {
+    pub id: LinkID,
+    pub weight: f32,
+    pub is_enabled: bool,
 }
 
-#[derive(Clone)]
-struct Genome {
-    id: i32,
-    num_inputs: i32,
-    num_outputs: i32,
-    neurons: Vec<NeuronGene>,
-    links: Vec<LinkGene>,
+#[derive(Clone, Debug)]
+pub struct Genome {
+    pub id: i32,
+    pub num_inputs: i32,
+    pub num_outputs: i32,
+    pub neurons: Vec<NeuronGene>,
+    pub links: Vec<LinkGene>,
 }
 
 static mut GENOME_INDEXER: i32 = 0;
@@ -90,7 +90,7 @@ impl Genome {
 
     pub fn make_output_ids(&self) -> Vec<i32> {
         let mut outputs: Vec<i32> = Vec::new();
-        for i in 0..self.num_inputs {
+        for i in 0..self.num_outputs {
             outputs.push(i);
         }
         outputs
@@ -98,7 +98,7 @@ impl Genome {
 }
 
 #[derive(Clone)]
-struct Individual {
-    genome: Genome,
-    fitness: f32,
+pub struct Individual {
+    pub genome: Genome,
+    pub fitness: f32,
 }
