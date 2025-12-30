@@ -28,16 +28,18 @@ fn choose_random_output_or_hidden(genome: &Genome) -> i32 {
     }
 }
 
-fn choose_random_hidden(genome: &Genome) -> i32 {
-    loop {
-        let mut rng = rand::rng();
-        let chosen = genome.neurons.choose(&mut rng).unwrap();
-        if chosen.id < genome.num_outputs {
-            // input neuron
-            continue;
-        }
-        return chosen.id;
+fn choose_random_hidden(genome: &Genome) -> Option<i32> {
+    // Check if there are any hidden neurons
+    let hidden_neurons: Vec<&NeuronGene> = genome.neurons.iter()
+        .filter(|n| n.id >= genome.num_outputs)
+        .collect();
+    
+    if hidden_neurons.is_empty() {
+        return None;
     }
+    
+    let mut rng = rand::rng();
+    Some(hidden_neurons.choose(&mut rng).unwrap().id)
 }
 fn would_create_cycle(links: &Vec<LinkGene>, in_id: i32, out_id: i32) -> bool {
     if in_id == out_id {
