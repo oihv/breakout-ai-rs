@@ -40,15 +40,15 @@ impl Config {
         static CONFIG: OnceLock<Config> = OnceLock::new();
         CONFIG.get_or_init(|| Config {
             init_mean: 0.0,
-            init_stdev: 1.0,
-            min: -20.0,
-            max: 20.0,
+            init_stdev: 0.5,  // Smaller initial weights for better starting point
+            min: -5.0,  // Smaller range
+            max: 5.0,   // Smaller range
             mutation_rate: 0.2,
-            mutate_power: 1.2,
+            mutate_power: 0.3,  // Smaller mutations
             replace_rate: 0.05,
-            survival_threshold: 0.5,
+            survival_threshold: 0.2,
 
-            num_inputs: 8,
+            num_inputs: 3,
             num_outputs: 3,
 
             add_node_prob: 0.03,
