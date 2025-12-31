@@ -146,7 +146,7 @@ pub fn mutate_remove_neuron(genome: &mut Genome) -> Option<()> {
         return None;
     }
 
-    let random_neuron_id = choose_random_hidden(&genome);
+    let random_neuron_id = choose_random_hidden(&genome)?;
 
     // Remove associated links with this neuron
     genome.links.retain(|x| x.id.in_id != random_neuron_id && x.id.out_id != random_neuron_id);
