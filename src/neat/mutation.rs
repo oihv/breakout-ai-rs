@@ -116,7 +116,7 @@ pub fn mutate_add_neuron(genome: &mut Genome) -> Option<()> {
 
     let mut rng = rand::rng();
     let link_to_split: &mut LinkGene = genome.links.choose_mut(&mut rng).unwrap();
-    link_to_split.is_enabled = true;
+    link_to_split.is_enabled = false; // Disable the original link when splitting
 
     let new_neuron = NeuronGene {
         id: genome.neurons.len() as i32,
