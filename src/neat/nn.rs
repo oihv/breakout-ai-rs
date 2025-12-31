@@ -196,3 +196,241 @@ impl FeedForwardNeuralNetwork {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::neat::*;
+
+    #[test]
+    fn simple_nn_activation_test() {
+        let neurons = vec![
+            Neuron {
+                id: 0,
+                bias: 0.,
+                inputs: vec![
+                    NeuronInput {
+                        input_id: -1,
+                        weight: 1.,
+                    },
+                    NeuronInput {
+                        input_id: -2,
+                        weight: 2.,
+                    },
+                    NeuronInput {
+                        input_id: -3,
+                        weight: 3.,
+                    },
+                ],
+            },
+            Neuron {
+                id: 1,
+                bias: 1.,
+                inputs: vec![
+                    NeuronInput {
+                        input_id: -1,
+                        weight: 1.,
+                    },
+                    NeuronInput {
+                        input_id: -2,
+                        weight: 2.,
+                    },
+                    NeuronInput {
+                        input_id: -3,
+                        weight: 3.,
+                    },
+                ],
+            },
+            Neuron {
+                id: 2,
+                bias: 2.,
+                inputs: vec![
+                    NeuronInput {
+                        input_id: -1,
+                        weight: 1.,
+                    },
+                    NeuronInput {
+                        input_id: -2,
+                        weight: 2.,
+                    },
+                    NeuronInput {
+                        input_id: -3,
+                        weight: 3.,
+                    },
+                ],
+            },
+        ];
+        let mut nn = FeedForwardNeuralNetwork {
+            input_ids: vec![-1, -2, -3],
+            output_ids: vec![0, 1, 2],
+            neurons,
+        };
+
+        let output = nn.activate(vec![1., 2., 3.]);
+
+        assert_eq!(output[0], 14.0);
+        assert_eq!(output[1], 15.0);
+        assert_eq!(output[2], 16.0);
+    }
+
+    #[test]
+    fn create_from_genome_test() {
+        let neurons = vec![
+            Neuron {
+                id: 0,
+                bias: 0.,
+                inputs: vec![
+                    NeuronInput {
+                        input_id: -1,
+                        weight: 1.,
+                    },
+                    NeuronInput {
+                        input_id: -2,
+                        weight: 2.,
+                    },
+                    NeuronInput {
+                        input_id: -3,
+                        weight: 3.,
+                    },
+                ],
+            },
+            Neuron {
+                id: 1,
+                bias: 1.,
+                inputs: vec![
+                    NeuronInput {
+                        input_id: -1,
+                        weight: 1.,
+                    },
+                    NeuronInput {
+                        input_id: -2,
+                        weight: 2.,
+                    },
+                    NeuronInput {
+                        input_id: -3,
+                        weight: 3.,
+                    },
+                ],
+            },
+            Neuron {
+                id: 2,
+                bias: 2.,
+                inputs: vec![
+                    NeuronInput {
+                        input_id: -1,
+                        weight: 1.,
+                    },
+                    NeuronInput {
+                        input_id: -2,
+                        weight: 2.,
+                    },
+                    NeuronInput {
+                        input_id: -3,
+                        weight: 3.,
+                    },
+                ],
+            },
+        ];
+        let mut expected_nn = FeedForwardNeuralNetwork {
+            input_ids: vec![-1, -2, -3],
+            output_ids: vec![0, 1, 2],
+            neurons,
+        };
+
+        let genome = Genome {
+            id: 1,
+            num_inputs: 3,
+            num_outputs: 3,
+            neurons: vec![
+                NeuronGene { id: -1, bias: -1. },
+                NeuronGene { id: -2, bias: -2. },
+                NeuronGene { id: -3, bias: -3. },
+                NeuronGene { id: 0, bias: 0. },
+                NeuronGene { id: 1, bias: 1. },
+                NeuronGene { id: 2, bias: 2. },
+            ],
+            links: vec![
+                LinkGene {
+                    id: LinkID {
+                        in_id: -1,
+                        out_id: 0,
+                    },
+                    weight: 1.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -1,
+                        out_id: 1,
+                    },
+                    weight: 1.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -1,
+                        out_id: 2,
+                    },
+                    weight: 1.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -2,
+                        out_id: 0,
+                    },
+                    weight: 2.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -2,
+                        out_id: 1,
+                    },
+                    weight: 2.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -2,
+                        out_id: 2,
+                    },
+                    weight: 2.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -3,
+                        out_id: 0,
+                    },
+                    weight: 3.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -3,
+                        out_id: 1,
+                    },
+                    weight: 3.,
+                    is_enabled: true,
+                },
+                LinkGene {
+                    id: LinkID {
+                        in_id: -3,
+                        out_id: 2,
+                    },
+                    weight: 3.,
+                    is_enabled: true,
+                },
+            ],
+        };
+
+        let mut nn_from_genome = FeedForwardNeuralNetwork::create_from_genome(&genome);
+
+        // Sort neurons by ID for comparison (order doesn't matter functionally)
+        expected_nn.neurons.sort_by_key(|n| n.id);
+        nn_from_genome.neurons.sort_by_key(|n| n.id);
+
+        assert_eq!(expected_nn, nn_from_genome);
+    }
+}
