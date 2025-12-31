@@ -120,7 +120,7 @@ pub fn mutate_add_neuron(genome: &mut Genome) -> Option<()> {
 
     let new_neuron = NeuronGene {
         id: genome.neurons.len() as i32,
-        bias: (rand::random::<f32>() * 2.0 - 1.0) * 1000.0,
+        bias: (rand::random::<f32>() * 2.0 - 1.0), // Random bias between -1 and 1
     };
     genome.neurons.push(new_neuron.clone());
 
