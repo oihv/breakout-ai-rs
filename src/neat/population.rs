@@ -7,17 +7,36 @@ pub fn sort_individuals_by_fitness(individuals: &mut Vec<crate::neat::Individual
 }
 
 use crate::neat::Individual;
-struct Population {
-    individuals: Vec<Individual>,
-    best: Individual
+pub struct Population {
+    pub individuals: Vec<Individual>,
+    pub best: Individual
 }
 
 impl Population {
+    pub fn new() -> Self {
+        let config = crate::config::Config::global();
+        Self {
+            individuals: Vec::new(),
+            best: Individual {
+                genome: crate::neat::Genome::new(config.num_inputs, config.num_outputs),
+                fitness: 0.0,
+            }
+        }
+    }
+
     pub fn populate(&mut self) {
         let config = crate::config::Config::global();
 
         for _ in 0..config.population_size {
             self.individuals.push(Individual{ genome: super::Genome::new(config.num_inputs, config.num_outputs), fitness: 0.0})
+        }
+    }
+
+    pub fn populate_from_genome(&mut self, prev_genome: super::Genome) {
+        let config = crate::config::Config::global();
+
+        for _ in 0..config.population_size {
+            self.individuals.push(Individual{ genome: prev_genome.clone(), fitness: 0.0})
         }
     }
 
