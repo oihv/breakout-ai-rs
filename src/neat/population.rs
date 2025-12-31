@@ -45,10 +45,8 @@ impl Population {
 
         let reproduction_cutoff = (config.survival_threshold * self.individuals.len() as f32).ceil() as usize;
 
-        let mut survived_members:Vec<Individual> = Vec::new();
-        for _ in 0..reproduction_cutoff {
-            survived_members.push(self.individuals.pop().unwrap());
-        }
+        // Individuals are sorted with BEST first, so take from the front, not the back!
+        let survived_members: Vec<Individual> = self.individuals[..reproduction_cutoff].to_vec();
 
         let mut new_gen:Vec<Individual> = Vec::new();
         let spawn_size = config.population_size;
