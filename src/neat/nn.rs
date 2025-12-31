@@ -157,7 +157,16 @@ impl FeedForwardNeuralNetwork {
     pub fn create_from_genome(genome: &Genome) -> FeedForwardNeuralNetwork {
         let inputs = genome.make_input_ids();
         let outputs = genome.make_output_ids();
-        let layers = feed_forward_layers(&inputs, &outputs, &genome.links);
+
+        // Filter only enabled links
+        let enabled_links: Vec<LinkGene> = genome
+            .links
+            .iter()
+            .filter(|link| link.is_enabled)
+            .cloned()
+            .collect();
+
+        let layers = feed_forward_layers(&inputs, &outputs, &enabled_links);
 
         let mut neurons: Vec<Neuron> = Vec::new();
         for layer in layers {
