@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package neat;
+
+message NeuronGene {
+  int32 id = 1;
+  float bias = 2;
+}
+
+message LinkID {
+  int32 in_id = 1;
+  int32 out_id = 2;
+}
+
+message LinkGene {
+  LinkID id = 1;
+  float weight = 2;
+  bool is_enabled = 3;
+}
+
+message Genome {
+  int32 id = 1;
+  int32 num_inputs = 2;
+  int32 num_outputs = 3;
+  repeated NeuronGene neurons = 4;
+  repeated LinkGene links = 5;
+}
+
+message Individual {
+  Genome genome = 1;
+  float fitness = 2;
+}
+
+message Population {
+  repeated Individual individuals = 1;
+  Individual best = 2;
+}

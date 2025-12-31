@@ -33,6 +33,8 @@ pub struct Config {
 
     // General
     pub population_size: usize,
+    pub num_generations: usize,
+    pub num_steps: usize,
 }
 
 impl Config {
@@ -65,6 +67,8 @@ impl Config {
             compatibility_threshold: 3.0,
 
             population_size: 150,
+            num_generations: 100,
+            num_steps: 5000,
         })
     }
 }

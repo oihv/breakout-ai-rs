@@ -114,6 +114,8 @@ pub struct FeedForwardNeuralNetwork {
 
 impl FeedForwardNeuralNetwork {
     pub fn activate(&mut self, inputs: Vec<f32>) -> Vec<f32> {
+        // dbg!(inputs.len());
+        // dbg!(self.input_ids.len());
         assert!(inputs.len() == self.input_ids.len());
 
         let mut values: HashMap<i32, f32> = HashMap::new();

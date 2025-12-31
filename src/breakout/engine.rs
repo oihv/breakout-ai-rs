@@ -117,7 +117,9 @@ impl BreakoutEngine {
             / self.platform_width;
         let mut angle_deg = scale * 180.;
         // Normalized = old val * (new_max -  new_min) / (old_max - old_min) + new_min
-        angle_deg = angle_deg * (180. - self.ball_min_shoot_angle - self.ball_min_shoot_angle) / (180. - 0.) + self.ball_min_shoot_angle;
+        angle_deg = angle_deg * (180. - self.ball_min_shoot_angle - self.ball_min_shoot_angle)
+            / (180. - 0.)
+            + self.ball_min_shoot_angle;
         let angle_rad = PI * angle_deg / (180.);
 
         self.dx = self.ball_speed * f32::cos(angle_rad);
@@ -170,9 +172,13 @@ impl BreakoutEngine {
             self.ball_y = self.scr_h - 0.5;
         }
 
-        // Ball collision with walls
-        if self.ball_x <= 0.0 || self.ball_x > self.scr_w {
+        // Left wall
+        if self.ball_x <= 0.0 {
             self.dx *= -1.0;
+            self.ball_x = 0.0;
+        } else if self.ball_x + self.ball_rad > self.scr_w {
+            self.dx *= -1.0;
+            self.ball_x = self.scr_w - self.ball_rad;
         }
 
         // Ball collision platform
@@ -244,10 +250,9 @@ impl BreakoutEngine {
 
         // Secondary rewards: destroying blocks and getting score
         let block_bonus = blocks_destroyed * 50.0;
-        let score_bonus = self.score as f32;
 
         // Survival is the most important for initial learning
-        time_bonus + block_bonus + score_bonus
+        time_bonus + block_bonus
     }
 }
 
