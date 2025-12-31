@@ -187,10 +187,45 @@ pub fn mutate_weights(genome: &mut Genome) -> Option<()> {
     Some(())
 }
 
-    let mut rng = rand::rng();
-    let mutation = mutations_list.choose(&mut rng).unwrap();
+pub fn mutate_biases(genome: &mut Genome) -> Option<()> {
+    if genome.neurons.is_empty() {
+        return None;
+    }
+    
+    let config = crate::config::Config::global();
+    
+    for neuron in genome.neurons.iter_mut() {
+        if rand::random::<f32>() < config.mutation_rate {
+            if rand::random::<f32>() < config.shift_weight_prob {
+                // Small adjustment to existing bias
+                neuron.bias = mutate_delta(neuron.bias);
+            } else if rand::random::<f32>() < config.random_weight_prob {
+                // Replace with completely new random bias
+                neuron.bias = new_value();
+            }
+        }
+    }
+    
+    Some(())
+}
 
-    mutation(genome)
+pub fn mutate(genome: &mut Genome) -> Option<()> {
+    // Always mutate weights and biases (most important for learning!)
+    mutate_weights(genome);
+    mutate_biases(genome);
+    
+    // Also do structural mutations with some probability
+    let config = crate::config::Config::global();
+    
+    if rand::random::<f32>() < config.add_link_prob {
+        mutate_add_link(genome);
+    }
+    
+    if rand::random::<f32>() < config.add_node_prob {
+        mutate_add_neuron(genome);
+    }
+    
+    Some(())
 }
 
 // Unstructured Mutations
