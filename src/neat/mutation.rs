@@ -165,8 +165,27 @@ enum MutationsType {
     RemoveNeuron,
 }
 
-pub fn mutate(genome: &mut Genome) -> Option<()> {
-    let mutations_list = [mutate_add_link, mutate_add_neuron, mutate_remove_link, mutate_remove_neuron];
+pub fn mutate_weights(genome: &mut Genome) -> Option<()> {
+    if genome.links.is_empty() {
+        return None;
+    }
+    
+    let config = crate::config::Config::global();
+    
+    for link in genome.links.iter_mut() {
+        if rand::random::<f32>() < config.mutation_rate {
+            if rand::random::<f32>() < config.shift_weight_prob {
+                // Small adjustment to existing weight
+                link.weight = mutate_delta(link.weight);
+            } else if rand::random::<f32>() < config.random_weight_prob {
+                // Replace with completely new random weight
+                link.weight = new_value();
+            }
+        }
+    }
+    
+    Some(())
+}
 
     let mut rng = rand::rng();
     let mutation = mutations_list.choose(&mut rng).unwrap();
