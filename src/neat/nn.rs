@@ -1,24 +1,24 @@
 use super::{Genome, LinkGene};
 use std::collections::{HashMap, HashSet};
 
-fn relu(x: f32) -> f32 {
+pub fn relu(x: f32) -> f32 {
     x.max(0.0)
 }
 
-#[derive(Clone)]
-struct NeuronInput {
-    input_id: i32,
-    weight: f32,
+#[derive(Clone, Debug, PartialEq)]
+pub struct NeuronInput {
+    pub input_id: i32,
+    pub weight: f32,
 }
 
-#[derive(Clone)]
-struct Neuron {
-    id: i32,
-    bias: f32,
-    inputs: Vec<NeuronInput>,
+#[derive(Clone, Debug, PartialEq)]
+pub struct Neuron {
+    pub id: i32,
+    pub bias: f32,
+    pub inputs: Vec<NeuronInput>,
 }
 
-fn required_for_output(
+pub fn required_for_output(
     inputs: &Vec<i32>,
     outputs: &Vec<i32>,
     links: &Vec<LinkGene>,
@@ -56,7 +56,7 @@ fn required_for_output(
     required
 }
 
-fn feed_forward_layers(inputs: &Vec<i32>, outputs: &Vec<i32>, links: &Vec<LinkGene>) -> Vec<Vec<i32>> {
+pub fn feed_forward_layers(inputs: &Vec<i32>, outputs: &Vec<i32>, links: &Vec<LinkGene>) -> Vec<Vec<i32>> {
     let mut layers: Vec<Vec<i32>> = Vec::new();
     let required = required_for_output(&inputs, &outputs, &links);
 
@@ -104,10 +104,11 @@ fn feed_forward_layers(inputs: &Vec<i32>, outputs: &Vec<i32>, links: &Vec<LinkGe
     layers
 }
 
-struct FeedForwardNeuralNetwork {
-    input_ids: Vec<i32>,
-    output_ids: Vec<i32>,
-    neurons: Vec<Neuron>,
+#[derive(Debug, PartialEq)]
+pub struct FeedForwardNeuralNetwork {
+    pub input_ids: Vec<i32>,
+    pub output_ids: Vec<i32>,
+    pub neurons: Vec<Neuron>,
 }
 
 impl FeedForwardNeuralNetwork {
@@ -144,7 +145,7 @@ impl FeedForwardNeuralNetwork {
         return outputs;
     }
 
-    pub fn create_from_gnome(genome: &Genome) -> FeedForwardNeuralNetwork {
+    pub fn create_from_genome(genome: &Genome) -> FeedForwardNeuralNetwork {
         let inputs = genome.make_input_ids();
         let outputs = genome.make_output_ids();
         let layers = feed_forward_layers(&inputs, &outputs, &genome.links);
