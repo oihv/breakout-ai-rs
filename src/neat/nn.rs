@@ -135,7 +135,13 @@ impl FeedForwardNeuralNetwork {
                 value += *(values.get(&input.input_id).unwrap()) * input.weight;
             }
             value += neuron.bias;
-            value = relu(value);
+
+            // Only apply ReLU to hidden neurons, not output neurons
+            // Output neurons need to be able to express negative values for comparison
+            if !self.output_ids.contains(&neuron.id) {
+                value = relu(value);
+            }
+
             values.insert(neuron.id, value);
         }
 
