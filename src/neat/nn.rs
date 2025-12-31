@@ -44,7 +44,8 @@ pub fn required_for_output(
         }
 
         // Why copied? because filter returns an iterator of references
-        let layer_nodes: HashSet<i32> = t.iter().filter(|x| inputs.contains(x)).copied().collect();
+        // only add nodes that is not in the input nodes
+        let layer_nodes: HashSet<i32> = t.iter().filter(|x| !inputs.contains(x)).copied().collect();
         if layer_nodes.is_empty() {
             break;
         }
