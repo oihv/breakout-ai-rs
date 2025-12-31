@@ -128,8 +128,10 @@ impl FeedForwardNeuralNetwork {
 
         for neuron in self.neurons.clone() {
             let mut value = 0.0;
-            for input in neuron.inputs {
-                assert!(values.contains_key(&input.input_id));
+            for input in &neuron.inputs {
+                if !values.contains_key(&input.input_id) {
+                    panic!("Missing input {} for neuron {}", input.input_id, neuron.id);
+                }
                 value += *(values.get(&input.input_id).unwrap()) * input.weight;
             }
             value += neuron.bias;
