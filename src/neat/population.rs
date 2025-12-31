@@ -2,8 +2,8 @@ use rand::seq::IndexedRandom;
 use super::crossover::crossover;
 use super::mutation::mutate;
 
-fn sort_individuals_by_fitness(individuals: &mut Vec<Individual>) {
-    individuals.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
+pub fn sort_individuals_by_fitness(individuals: &mut Vec<crate::neat::Individual>) {
+    individuals.sort_by(|a, b| b.fitness.partial_cmp(&a.fitness).unwrap());
 }
 
 use crate::neat::Individual;
