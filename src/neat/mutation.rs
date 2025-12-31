@@ -151,7 +151,9 @@ pub fn mutate_remove_neuron(genome: &mut Genome) -> Option<()> {
     // Remove associated links with this neuron
     genome.links.retain(|x| x.id.in_id != random_neuron_id && x.id.out_id != random_neuron_id);
 
-    genome.neurons.remove(random_neuron_id as usize);
+    // Find the index of the neuron with this ID
+    let neuron_index = genome.neurons.iter().position(|n| n.id == random_neuron_id)?;
+    genome.neurons.remove(neuron_index);
 
     Some(())
 }
