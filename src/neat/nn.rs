@@ -56,7 +56,11 @@ pub fn required_for_output(
     required
 }
 
-pub fn feed_forward_layers(inputs: &Vec<i32>, outputs: &Vec<i32>, links: &Vec<LinkGene>) -> Vec<Vec<i32>> {
+pub fn feed_forward_layers(
+    inputs: &Vec<i32>,
+    outputs: &Vec<i32>,
+    links: &Vec<LinkGene>,
+) -> Vec<Vec<i32>> {
     let mut layers: Vec<Vec<i32>> = Vec::new();
     let required = required_for_output(&inputs, &outputs, &links);
 
