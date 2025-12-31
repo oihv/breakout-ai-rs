@@ -142,7 +142,7 @@ impl FeedForwardNeuralNetwork {
             outputs.push(values[&output_id]);
         }
 
-        return outputs;
+        outputs
     }
 
     pub fn create_from_genome(genome: &Genome) -> FeedForwardNeuralNetwork {
