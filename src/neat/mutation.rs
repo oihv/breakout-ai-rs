@@ -102,7 +102,8 @@ pub fn mutate_remove_link(genome: &mut Genome) -> Option<()> {
         return None;
     }
 
-    let to_remove_id = random_range((genome.num_outputs)..=(genome.links.len() as i32));
+    // Generate index from 0 to links.len() - 1 (valid Vec indices)
+    let to_remove_id = random_range(0..(genome.links.len() as i32));
 
     genome.links.remove(to_remove_id as usize);
     Some(())

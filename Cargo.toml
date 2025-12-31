@@ -3,6 +3,26 @@ name = "breakout-ai-rs"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "breakout-game"
+path = "src/main.rs"
+
+[[bin]]
+name = "breakout-train"
+path = "src/train_cli.rs"
+
+[[bin]]
+name = "breakout-ai"
+path = "src/play_ai.rs"
+
+[[bin]]
+name = "test-network"
+path = "src/test_network.rs"
+
+[[bin]]
+name = "debug-genome"
+path = "src/debug_genome.rs"
+
 [dependencies]
 macroquad = "0.4.14"
 rand = "0.9.2"
