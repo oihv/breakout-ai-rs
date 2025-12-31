@@ -160,9 +160,11 @@ pub fn mutate_remove_neuron(genome: &mut Genome) -> Option<()> {
 
 enum MutationsType {
     AddLink,
-    RemoveLink,
+    // RemoveLink,
     AddNeuron,
-    RemoveNeuron,
+    // RemoveNeuron,
+    MutateWeights,
+    MutateBiases,
 }
 
 pub fn mutate_weights(genome: &mut Genome) -> Option<()> {
