@@ -172,7 +172,7 @@ impl FeedForwardNeuralNetwork {
         for layer in layers {
             for neuron_id in layer {
                 let mut neuron_inputs: Vec<NeuronInput> = Vec::new();
-                for link in genome.links.clone() {
+                for link in enabled_links.clone() {
                     if neuron_id == link.id.out_id {
                         neuron_inputs.push(NeuronInput {
                             input_id: link.id.in_id,
