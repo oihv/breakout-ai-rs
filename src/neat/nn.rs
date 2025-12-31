@@ -82,18 +82,14 @@ pub fn feed_forward_layers(
         // Keep only the used nodes whose entire input set is contained in s
         let mut next_layer: Vec<i32> = Vec::new();
         for n in c {
-            let connections_to_n: Vec<i32> = links
+            let inputs_to_n: Vec<i32> = links
                 .clone()
                 .iter()
                 .filter(|x| x.id.out_id == n && required.contains(&x.id.in_id))
-                .map(|x| x.id.out_id)
+                .map(|x| x.id.in_id)
                 .collect();
 
-            if required.contains(&n)
-                && connections_to_n
-                    .iter()
-                    .all(|x| potential_input.contains(&x))
-            {
+            if required.contains(&n) && inputs_to_n.iter().all(|x| potential_input.contains(x)) {
                 next_layer.push(n);
             }
         }
